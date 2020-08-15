@@ -136,3 +136,58 @@ for ele in inputs:
     else:
       mat = move_right(mat)
     print(mat)
+
+=======================================================================================================================================================================
+                        UI PART
+=======================================================================================================================================================================
+
+from Tkinter import Frame,Label,CENTER   #tkinter library in python2 importing class
+import LogicsFinal                       #logic file as logicsfinal
+import constants as c                    #constants file where diff constants are given
+
+
+class Game2048(Frame):                  #class game2048 inherited from frame class, super class is frame
+    def __init__(self):
+        Frame.__init__(self)                #frame of object game2048 is created
+        self.grid()                         #tkinter has a grid manager that allows us to create all visits in form of grid
+        self.master.title("2048")           #frame's boundary title is set to 2048
+        self.master.bind(<"Key">,self.key_down)   #if any key s pressed i will go to self.key_down func,binding is there to see the UI events
+        
+        self.commands={c.KEY_UP:LogicsFinal.move_up,      #key up means 'w' ,
+                    c.KEY_DOWN:LogicsFinal.move_down,  #key down means 's' ,
+                    c.KEY_LEFT:LogicsFinal.move_left,  #key left means 'a' ,
+                    c.KEY_RIGHT:LogicsFinal.move_right #key right means 'd'
+                    }
+        
+        self.grid_cells=[]   #grid contains cells initially it is empty
+        self.init_grid()     #add the grid cells
+        self.init_matrix()   
+        self.update_grid_cells()   #change in UI , that what is text color and what is background color acc to numbers
+        self.main_loop()           #runs the program
+    
+    def init_grid(self):
+        background=Frame(self,bg=c.BACKGROUND_COLOR_GAME,       #frame is another kind of visit
+                            width=c.SIZE,height=c.SIZE)
+        background.grid()      #visualize the background as a grid
+        for i in range(c.GRID_LEN):
+            grid_row=[]
+            for j in range(c.GRID_LEN):
+                cell=Frame(background,bg=c.BACKGROUND_COLOR_CELL_EMPTY,   #INSIDE frame cell of frame type is made
+                           width=c.SIZE/c.GRID_LEN,height=c.SIZE/c.GRID_LEN) 
+                cell.grid(row=i,column=j,padx=c.GRID_PADDING,
+                          pady=c.GRID_PADDING)
+                t=Label(master=cell,text="",            #label is inside each cell
+                       bg=c.BACKGROUND_COLOR_CELL_EMPTY,
+                       justify=CENTER,font=c.FONT,width=5,height=2)
+                t.grid()                              #label is itself is a grid
+                grid_row.append(t)
+            self.grid_cells.append(grid_row)
+
+
+
+
+
+
+
+
+
